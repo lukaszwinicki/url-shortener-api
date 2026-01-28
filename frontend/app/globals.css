@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+body {
+  background: #0f0f0f;
+  color: #e5e5e5;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.fade-border {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #333 20%, #333 80%, transparent 100%);
+  border: none;
+}

@@ -1,0 +1,17 @@
+services:
+  frontend:
+    image: node:20-alpine
+    container_name: shorturl_frontend
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - NEXT_PUBLIC_SHORT_URL_BASE=http://localhost:8080
+    command: sh -c "npm install && npm run dev"
+    restart: unless-stopped
