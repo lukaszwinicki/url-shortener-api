@@ -1,0 +1,20 @@
+meta {
+  name: Get Session
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/session
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Retrieves current session information.
+  Requires JWT authentication.
+}

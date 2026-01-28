@@ -1,0 +1,12 @@
+script:pre-request {
+  // Skip auth for session creation and public endpoints
+  // const url = req.getUrl();
+  // if (url.includes('/api/session') || url.includes('/api/public') || url.match(/\/[a-zA-Z0-9]{6,8}$/)) {
+  //   return;
+  // }
+
+  const token = bru.getEnvVar('jwtToken');
+  if (token) {
+    req.setHeader('Authorization', 'Bearer ' + token);
+  }
+}

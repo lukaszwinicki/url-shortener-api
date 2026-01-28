@@ -1,0 +1,43 @@
+meta {
+  name: Create Short URL
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/urls
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "originalUrl": "{{exampleUrl}}",
+    "visibility": "public"
+  }
+}
+
+docs {
+  Creates a new shortened URL.
+  - originalUrl: The long URL to shorten (required)
+  - visibility: "public" or "private" (default: "public")
+  - expiration: "1h", "1d", or "1w" (optional)
+  - customAlias: Custom 6-8 character alias (optional, must be unique)
+
+  Rate limit: 10 URLs per minute per session.
+}
+
+script:post-response {
+  if (res.status === 200 || res.status === 201) {
+    const data = res.body;
+    bru.setEnvVar('lastShortCode', data.shortCode);
+    bru.setEnvVar('lastUrlId', data.id);
+    console.log('[Create Short URL] Short code:', data.shortCode);
+    console.log('[Create Short URL] Full URL: {{baseUrl}}/' + data.shortCode);
+  }
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Get URL Stats
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/urls/{{lastUrlId}}/stats
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Returns detailed statistics for a specific URL.
+  Requires ownership (URL must belong to current session).
+
+  Statistics include:
+  - Total click count
+  - Clicks by date (last 30 days)
+  - Top referers
+}

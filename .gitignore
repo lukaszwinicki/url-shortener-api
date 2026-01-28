@@ -1,0 +1,30 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backend (Symfony)
+###> symfony/framework-bundle ###
+backend/.env.local
+backend/.env.local.php
+backend/.env.*.local
+backend/config/secrets/prod/prod.decrypt.private.php
+backend/public/bundles/
+backend/var/
+backend/vendor/
+###< symfony/framework-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+backend/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+# Frontend (if added later)
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local

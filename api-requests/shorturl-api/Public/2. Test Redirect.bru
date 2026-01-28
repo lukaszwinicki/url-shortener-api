@@ -1,0 +1,23 @@
+meta {
+  name: Test Redirect
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/claude
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: text/html
+}
+
+docs {
+  Tests the redirect functionality.
+  Redirects to the original URL (HTTP 302).
+  Records click event asynchronously via RabbitMQ.
+  
+  No authentication required.
+}

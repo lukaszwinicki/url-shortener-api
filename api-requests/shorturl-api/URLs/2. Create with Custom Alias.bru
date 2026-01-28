@@ -1,0 +1,39 @@
+meta {
+  name: Create with Custom Alias
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/urls
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "originalUrl": "https://github.com/anthropics/claude-code",
+    "visibility": "public",
+    "customAlias": "claude",
+    "expiration": "1w"
+  }
+}
+
+docs {
+  Creates a shortened URL with custom alias and expiration.
+  - customAlias: Must be 6-8 alphanumeric characters
+  - expiration: "1w" = expires in 1 week
+}
+
+script:post-response {
+  if (res.status === 200 || res.status === 201) {
+    const data = res.body;
+    console.log('[Custom Alias] Short code:', data.shortCode);
+    console.log('[Custom Alias] Expires at:', data.expiresAt);
+  }
+}

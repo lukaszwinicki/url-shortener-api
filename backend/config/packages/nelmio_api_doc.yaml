@@ -1,0 +1,16 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: URL Shortener API
+            version: 1.0.0
+            description: A simple and efficient URL shortening service with analytics. Create short URLs, track clicks, and manage your links.
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+    areas:
+        default:
+            path_patterns:
+                - ^/api

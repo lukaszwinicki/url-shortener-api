@@ -1,0 +1,31 @@
+meta {
+  name: Create Session
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/session
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+docs {
+  Creates a new anonymous session and returns a JWT token.
+  The JWT token is automatically saved to environment variables for use in subsequent requests.
+}
+
+script:post-response {
+  if (res.status === 200 || res.status === 201) {
+    const data = res.body;
+    bru.setEnvVar('jwtToken', data.jwtToken);
+    console.log('[Create Session] JWT token saved:', data.jwtToken);
+    console.log('[Create Session] Created at:', data.createdAt);
+    console.log('[Create Session] Expires at:', data.expiresAt);
+  }
+}

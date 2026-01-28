@@ -1,0 +1,72 @@
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        App\Entity\Session: 'plaintext'
+        Symfony\Component\Security\Core\User\InMemoryUser:
+            algorithm: bcrypt
+            cost: 12
+
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        session_provider:
+            id: App\Security\SessionUserProvider
+        docs_provider:
+            memory:
+                users:
+                    docs: { password: '$2y$12$b7I5adrsKPSdtW5QqvzFyef36mV3vqUCvP1ntsYkJuvg7.Z8Phh0O', roles: ['ROLE_DOCS'] }
+
+    firewalls:
+        dev:
+            # Ensure dev tools and static assets are always allowed
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+
+        # Public redirect endpoint - no authentication needed
+        public_redirect:
+            pattern: ^/[a-zA-Z0-9]{6,8}$
+            security: false
+
+        # API documentation - protected by HTTP Basic Auth
+        api_docs:
+            pattern: ^/api/docs
+            http_basic:
+                realm: 'API Documentation'
+            provider: docs_provider
+            stateless: true
+
+        # API Platform internal endpoints - no authentication needed
+        api_internal:
+            pattern: ^/api/(contexts|validation_errors|errors|\.well-known)
+            security: false
+
+        # Session creation endpoint - no authentication needed
+        session_creation:
+            pattern: ^/api/session$
+            methods: [POST]
+            security: false
+
+        # API endpoints protected by JWT
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+            provider: session_provider
+
+    # Note: Only the *first* matching rule is applied
+    access_control:
+        - { path: ^/api/docs, roles: ROLE_DOCS }
+        - { path: ^/api/(contexts|validation_errors|errors|\.well-known), roles: PUBLIC_ACCESS }
+        - { path: ^/api/session, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/public, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+when@test:
+    security:
+        password_hashers:
+            # Password hashers are resource-intensive by design to ensure security.
+            # In tests, it's safe to reduce their cost to improve performance.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon

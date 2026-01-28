@@ -1,0 +1,19 @@
+api_platform:
+    title: URL Shortener API
+    version: 1.0.0
+    description: 'A simple and efficient URL shortening service with analytics. Create short URLs, track clicks, and manage your links.'
+    enable_docs: true
+    enable_re_doc: true
+    enable_swagger_ui: false
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+    formats:
+        json: ['application/json']
+    swagger:
+        versions: [3]
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header

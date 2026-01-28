@@ -1,0 +1,23 @@
+meta {
+  name: Delete URL
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/urls/{{lastUrlId}}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Soft deletes a URL (sets deletedAt timestamp).
+  The URL will no longer be accessible for redirects.
+  Click history is preserved.
+  
+  Requires ownership (URL must belong to current session).
+}

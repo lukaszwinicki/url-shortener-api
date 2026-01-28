@@ -1,0 +1,20 @@
+meta {
+  name: List My URLs
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/urls
+  body: none
+  auth: inherit
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Returns all non-deleted URLs created by the current session.
+  Results are ordered by creation date (newest first).
+}

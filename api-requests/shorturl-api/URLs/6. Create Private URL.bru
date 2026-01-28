@@ -1,0 +1,42 @@
+meta {
+  name: Create Private URL
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/urls
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "originalUrl": "https://secret-internal-docs.company.com/confidential",
+    "visibility": "private",
+    "expiration": "1h"
+  }
+}
+
+docs {
+  Creates a private short URL that won't appear in public listings.
+  Expires in 1 hour.
+
+  Private URLs:
+  - Not listed in /api/public
+  - Still accessible via direct link (/{shortCode})
+  - Only visible in your personal list (/api/urls)
+}
+
+script:post-response {
+  if (res.status === 200 || res.status === 201) {
+    const data = res.body;
+    console.log('[Private URL] Short code:', data.shortCode);
+    console.log('[Private URL] Visibility:', data.visibility);
+  }
+}

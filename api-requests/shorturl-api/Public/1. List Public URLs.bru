@@ -1,0 +1,21 @@
+meta {
+  name: List Public URLs
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/public
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Returns all public, non-deleted, non-expired URLs.
+  No authentication required.
+  Limited to 100 most recent URLs.
+}
