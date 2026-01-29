@@ -13,6 +13,8 @@ export function CreateUrlForm({ onSuccess }: CreateUrlFormProps) {
   const [originalUrl, setOriginalUrl] = useState('');
   const [customAlias, setCustomAlias] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
+  const [hasExpiration, setHasExpiration] = useState(false);
+  const [expiration, setExpiration] = useState<'1h' | '1d' | '1w'>('1d');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdUrl, setCreatedUrl] = useState<UrlOutput | null>(null);
   const [error, setError] = useState('');
@@ -27,7 +29,8 @@ export function CreateUrlForm({ onSuccess }: CreateUrlFormProps) {
       const response = await urlsApi.create({
         originalUrl,
         customAlias: customAlias || undefined,
-        visibility: isPrivate ? 'private' : 'public'
+        visibility: isPrivate ? 'private' : 'public',
+        expiration: hasExpiration ? expiration : undefined
       });
 
       setCreatedUrl(response.data);
@@ -91,6 +94,37 @@ export function CreateUrlForm({ onSuccess }: CreateUrlFormProps) {
             {isPrivate ? 'Private' : 'Public'}
           </label>
         </div>
+
+        <div className="flex items-center">
+          <input
+            id="expiration"
+            type="checkbox"
+            checked={hasExpiration}
+            onChange={(e) => setHasExpiration(e.target.checked)}
+            className="w-4 h-4 bg-[#222] border border-[#333] rounded cursor-pointer accent-purple-500"
+          />
+          <label htmlFor="expiration" className="ml-2 text-sm font-medium text-gray-300 cursor-pointer">
+            Set expiration
+          </label>
+        </div>
+
+        {hasExpiration && (
+          <div>
+            <label htmlFor="expirationType" className="block text-sm font-medium text-gray-300 mb-1">
+              Expires in
+            </label>
+            <select
+              id="expirationType"
+              value={expiration}
+              onChange={(e) => setExpiration(e.target.value as '1h' | '1d' | '1w')}
+              className="w-full px-3 py-2 bg-[#222] border border-[#333] text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+              <option value="1h">1 hour</option>
+              <option value="1d">1 day</option>
+              <option value="1w">1 week</option>
+            </select>
+          </div>
+        )}
 
         <button
           type="submit"
