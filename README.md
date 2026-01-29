@@ -81,3 +81,7 @@ Backend includes unit tests and API integration tests covering all endpoints.
 cd backend
 composer tests
 ```
+
+## CI/CD
+
+GitHub Actions workflow runs tests on every push/PR to main branch.
