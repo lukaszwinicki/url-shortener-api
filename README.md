@@ -13,6 +13,16 @@ URL shortening service with click analytics.
 
 ## Development Setup
 
+Make the initialization scripts executable:
+
+```bash
+chmod +x init-dev.sh
+chmod +x backend/init-test-db.sh
+```
+
+- `init-dev.sh` - in the root directory
+- `backend/init-test-db.sh` - in the backend directory
+
 Start all services (PHP, PostgreSQL, RabbitMQ, frontend):
 
 ```bash
