@@ -35,7 +35,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html/var
+RUN chown -R www-data:www-data /var/www/html
 
 # Expose port
 EXPOSE 9000
