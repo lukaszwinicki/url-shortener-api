@@ -89,7 +89,7 @@ Backend includes unit tests and API integration tests covering all endpoints.
 
 ```bash
 cd backend
-composer tests
+composer test or php bin/phpunit
 ```
 
 ## CI/CD
