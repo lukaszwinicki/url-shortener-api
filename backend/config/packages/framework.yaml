@@ -8,12 +8,18 @@ framework:
     #esi: true
     #fragments: true
 
+    cache:
+        pools:
+            cache.rate_limiter:
+                adapter: cache.adapter.filesystem
+
     # Rate Limiter Configuration
     rate_limiter:
         url_creation:
             policy: 'sliding_window'
-            limit: 3
-            interval: '30 seconds'
+            limit: '%env(int:RATE_LIMITER_URL_CREATION_LIMIT)%'
+            interval: '%env(int:RATE_LIMITER_URL_CREATION_INTERVAL_SECONDS)% seconds'
+            cache_pool: cache.rate_limiter
 
 when@test:
     framework:

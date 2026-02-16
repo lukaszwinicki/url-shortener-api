@@ -9,15 +9,20 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Psr\Log\LoggerInterface;
 
-#[AsEventListener(event: 'kernel.request', priority: 10)]
+#[AsEventListener(event: 'kernel.request', priority: 0)]
 class RateLimitListener
 {
     public function __construct(
-        #[Autowire(service: 'limiter.url_creation')] private RateLimiterFactory $urlCreationLimiter,
+        #[Autowire(service: 'limiter.url_creation')]
+        private RateLimiterFactory $urlCreationLimiter,
         private Security $security,
-        #[Autowire(param: 'rate_limiter.url_creation.limit')] private int $limit,
-        #[Autowire(param: 'rate_limiter.url_creation.interval_seconds')] private int $intervalSeconds
+        #[Autowire(param: 'rate_limiter.url_creation.limit')]
+        private int $limit,
+        #[Autowire(param: 'rate_limiter.url_creation.interval_seconds')]
+        private int $intervalSeconds,
+        private LoggerInterface $logger
     ) {}
 
     public function __invoke(RequestEvent $event): void
@@ -33,6 +38,7 @@ class RateLimitListener
         }
 
         $user = $this->security->getUser();
+
         if (!$user instanceof SessionUser) {
             return;
         }
@@ -47,8 +53,11 @@ class RateLimitListener
             return;
         }
 
-        $limiter = $this->urlCreationLimiter->create($sessionId);
+        $limiterKey = 'url_create_' . $user->getUserIdentifier();
 
+        $this->logger->info("RateLimitListener triggered for key: {$limiterKey}");
+
+        $limiter = $this->urlCreationLimiter->create($limiterKey);
         $limit = $limiter->consume(1);
 
         if (!$limit->isAccepted()) {
