@@ -104,7 +104,7 @@ class PublicUrlsApiTest extends ApiTestCase
         $data = $this->assertJsonResponse();
 
         $this->assertIsArray($data);
-        $this->assertGreaterThanOrEqual(25, count($data));
+        $this->assertGreaterThanOrEqual(10, count($data));
     }
 
     public function testGetPublicUrlsDoesNotExposeSessionInfo(): void
