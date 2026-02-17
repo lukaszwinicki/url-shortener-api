@@ -74,7 +74,7 @@ class UrlListingAndStatsApiTest extends ApiTestCase
         $data = $this->assertJsonResponse();
 
         $this->assertIsArray($data);
-        $this->assertEquals(25, count($data));
+        $this->assertEquals(10, count($data));
     }
 
     public function testGetUrlStatsWithoutAuthentication(): void

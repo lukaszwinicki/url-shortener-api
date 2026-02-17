@@ -31,9 +31,6 @@ class Url
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $expiresAt = null;
 
-    #[ORM\Column(type: Types::STRING, length: 8, nullable: true, unique: true)]
-    private ?string $customAlias = null;
-
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
@@ -105,17 +102,6 @@ class Url
     public function setExpiresAt(?\DateTimeImmutable $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
-        return $this;
-    }
-
-    public function getCustomAlias(): ?string
-    {
-        return $this->customAlias;
-    }
-
-    public function setCustomAlias(?string $customAlias): self
-    {
-        $this->customAlias = $customAlias;
         return $this;
     }
 
