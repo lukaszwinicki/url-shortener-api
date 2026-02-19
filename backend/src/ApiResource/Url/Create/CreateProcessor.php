@@ -19,19 +19,14 @@ class CreateProcessor implements ProcessorInterface
         private EntityManagerInterface $entityManager,
         private ShortUrlGenerator $shortener,
         private Security $security,
-        private LoggerInterface $logger
     ) {
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): UrlOutput
     {
-        $this->logger->info('CreateProcessor - Input data type: ' . get_debug_type($data));
-
         if (!$data instanceof CreateInput) {
             throw new \RuntimeException('Expected CreateInput, got ' . get_debug_type($data));
         }
-
-        $this->logger->info('CreateProcessor - Original URL from input: ' . ($data->originalUrl ?? 'NULL'));
 
         $user = $this->security->getUser();
 
